@@ -183,13 +183,11 @@ def main():
         devider += 1
 
     array = MCList(array)
-    # print json.dumps(array.to_json())
 
-    json_file = open("comments.txt", 'r+')
+    json_file = open("comments.json", 'r+')
     json_file.write(json.dumps(array.to_json()))
     json_file.close()
 
 
 if __name__ == '__main__':
-    # main()
-    parser()
+    main()

@@ -11,7 +11,7 @@ def root_dir():  # pragma: no cover
 @app.route('/')
 def comments():
     try:
-        src = os.path.join(root_dir(), 'application/parser/comments.json')
+        src = os.path.join(root_dir(), 'application/comments/comments.json')
         json_file =  open(src).read()
         return json.loads(json_file)
     except IOError:
