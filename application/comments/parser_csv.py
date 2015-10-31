@@ -57,99 +57,32 @@ class CommentList(object):
         return str()
 
 
-# 11243	7495	Монстры на каникулах 2	43097	2015-10-29 23:51:42.574943+03	Фильм потрясающий. Подпортил впечатле
-def parse_row(row):
-    counter = 0
-    comment_id = ""
-    movie_id = ""
-    first_symbol = "" \
-                   ""
-    for item in row:
-        for element in item:
-            if counter == 0:
-                first_symbol = element
-
-            if first_symbol == '1':
-                first_left = 5
-                first_right = 10
-            else:
-                first_left = 4
-                first_right = 9
-
-            if counter < first_left:
-                comment_id += element
-            elif first_left < counter < first_right:
-                movie_id += element
-            counter += 1
-
-            if counter > first_right:
-                if counter < 33:
-                    element = item[counter] + item[counter + 1]\
-                              + item[counter + 2] + item[counter + 3] + item[counter + 4]
-
-
-def parser():
+def comments_parser():
     with open('comments.csv', 'r+') as csvfile:
-        spam_reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        spam_reader = csv.reader(csvfile, delimiter='\t', quotechar='|')
         comment_list = CommentList()
 
         i = 0
         for row in spam_reader:
-            if len(row) > 1:
-                # print "movieID: ", parse_row(row)
-                # print
+            if i > 0:
+                comment_model = CommentModel(comment_id=row[0],
+                                             movie_id=row[1],
+                                             movie_name=row[2],
+                                             user_id=row[3],
+                                             c_time=row[4],
+                                             message=row[5])
 
-                row0 = row[0].decode(encoding='utf-8').split()
-                c_time = ""
-                movie_name = ""
-                movie_id = ""
-                user_id = ""
-                comment_id = ""
-                j = 0
-                for item in row0:
-                    if j == 0:
-                        # print "comment id: ", item
-                        comment_id = item
-                    if j == 1:
-                        # print "movie id", item
-                        movie_id = item
-                    if j == 2:
-                        # print "movie name", item
-                        movie_name = item
-                    if j == 3:
-                        # print "user id", item
-                        user_id = item
-                    if j == 4:
-                        # print "c time", item
-                        c_time += item
-                    j += 1
-
-                row1 = row[1].decode(encoding='utf-8').split(' ')
-                message = ""
-                j = 0
-                for item in row1:
-                    if j == 0:
-                        c_time += ' ' + item
-                    else:
-                        message += row1[1]
-
-                for item in row[2::]:
-                    message += ' ' + item
-
-                comment_model = CommentModel(comment_id=comment_id, movie_id=movie_id, movie_name=movie_name, user_id=user_id, c_time=c_time, message=message)
                 comment_list.add_comment(comment_model)
-
-    return comment_list
+            i += 1
+        return comment_list
 
 
 def parser2():
-    array = parser()
+    array = comments_parser()
     comment_list = array.comment_list
 
     array = []
-
     array_stop_numbs = []
-    # array.append(movie_comment_model)
 
     couter = 0
     for i in comment_list:
@@ -169,7 +102,7 @@ def parser2():
     return array
 
 
-def main():
+def make_array():
     array = parser2()
 
     indexes = []
@@ -182,6 +115,11 @@ def main():
         array.remove(array[i - devider])
         devider += 1
 
+    return array
+
+
+def make_json_array():
+    array = make_array()
     array = MCList(array)
 
     json_file = open("comments.json", 'r+')
@@ -190,4 +128,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    make_json_array()
