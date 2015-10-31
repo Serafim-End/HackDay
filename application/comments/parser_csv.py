@@ -16,6 +16,7 @@ class Comment(object):
 class MovieCommentModel(json.JSONEncoder):
     def __init__(self, movie_id, movie_name):
         self.movie_id = movie_id
+        self.picture = None
         self.movie_name = movie_name
         self.comments_list = []
 

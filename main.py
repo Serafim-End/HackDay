@@ -38,5 +38,9 @@ def rank_comments():
     except IOError:
         return "Rank comments Error"
 
+@app.route('/picture/')
+def picture():
+    return "http://www.kinohod.ru/o/6e64/6e64/6e642a06-71ad-11e1-afa4-156b7cf860e4.jpeg"
+
 if __name__ == '__main__':
     app.run()
