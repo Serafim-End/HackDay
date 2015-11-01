@@ -3,7 +3,7 @@ import os
 
 from gensim import corpora
 
-from application.lsi import MyMorphy
+from application.lsi.morph import MyMorphy
 
 __author__ = 'nikita'
 

@@ -1,6 +1,6 @@
 __author__ = 'nikita'
 import json
-from parser_csv import make_array
+from parser_csv import make_set
 from rank_comments import RankComments, RankList
 
 
@@ -30,7 +30,7 @@ class MoviesPicture:
 
 
 if __name__ == '__main__':
-    array = make_array()
+    array = make_set()
     model = RankComments(array)
     model.rank_comments()
     movie_addition = MoviesPicture(model.mc_array)

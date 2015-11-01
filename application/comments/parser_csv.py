@@ -3,33 +3,7 @@ __author__ = 'nikita'
 
 import csv
 import json
-
-
-class Comment(object):
-    def __init__(self, comment_id, user_id, c_time, message):
-        self.comment_id = comment_id
-        self.user_id = user_id
-        self.c_time = c_time
-        self.message = message
-
-
-class MovieCommentModel(json.JSONEncoder):
-    def __init__(self, movie_id, movie_name):
-        self.movie_id = movie_id
-        self.picture = None
-        self.movie_name = movie_name
-        self.comments_list = []
-
-    def default(self, o):
-        return o.__dict__
-
-
-class MCList(json.JSONEncoder):
-    def __init__(self, array):
-        self.array = array
-
-    def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True)
+from movie_comment_model import *
 
 
 class CommentModel(object):
@@ -78,7 +52,7 @@ def comments_parser():
         return comment_list
 
 
-def parser2():
+def make_stable_comment_list():
     array = comments_parser()
     comment_list = array.comment_list
 
@@ -103,8 +77,8 @@ def parser2():
     return array
 
 
-def make_array():
-    array = parser2()
+def make_set():
+    array = make_stable_comment_list()
 
     indexes = []
     for i in xrange(len(array)):
@@ -120,7 +94,7 @@ def make_array():
 
 
 def make_json_array():
-    array = make_array()
+    array = make_set()
     array = MCList(array)
 
     json_file = open("comments.json", 'r+')

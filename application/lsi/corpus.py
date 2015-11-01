@@ -5,7 +5,7 @@ import os
 
 from gensim import corpora, utils
 
-from application.lsi import MyDictionary
+from application.lsi.dictionary import MyDictionary
 
 
 def iter_documents(top_directory):

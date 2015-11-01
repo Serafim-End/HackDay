@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from gensim import similarities
-
+from application.lsi.model import MyModel
+from application.lsi.morph import MyMorphy
 __author__ = 'nikita'
 
 
@@ -45,15 +46,15 @@ if __name__ == '__main__':
     # vocabulary = MyDictionary.load_dictionary(language='ru')
     # corpus = MyCorpusFiles.load_corpus('serialise/corpus.mm')
     model = MyModel(dict_file='serialise/vocabulary.dict', corpus_file='serialise/corpus.mm')
-    model.lsi()
+    # model.lsi()
 
-    print "dictionary: ", model.dictionary
+    # print "dictionary: ", model.dictionary
 
-    similarity_model = SimilarityLSI(model, u'Человек родился в машине', normalise_func=MyMorphy.normal_morph_static)
-    similarity = similarity_model.similarities()
-    print "lsi model: ", similarity_model.rank_priorities(similarity)
+    # similarity_model = SimilarityLSI(model, u'Человек родился в машине', normalise_func=MyMorphy.normal_morph_static)
+    # similarity = similarity_model.similarities()
+    # print "lsi model: ", similarity_model.rank_priorities(similarity)
 
     model.lda()
-    similarity_model = SimilarityLDA(model, u'Человек родился в машине', normalise_func=MyMorphy.normal_morph_static)
+    similarity_model = SimilarityLDA(model, u'система работает отвратительно', normalise_func=MyMorphy.normal_morph_static)
     similarity = similarity_model.similarities()
     print "lda model: ", similarity_model.rank_priorities(similarity)

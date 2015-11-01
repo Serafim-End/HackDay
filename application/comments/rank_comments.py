@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'nikita'
 import itertools
-from parser_transactions_csv import TransactionsModel
 import json
 
 
@@ -64,9 +63,6 @@ class RankComment:
         self.filter_length_weight_comment()
         for comment in self.comments_list:
             print comment.message
-
-        print
-        print
         return str()
 
 
