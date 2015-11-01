@@ -55,6 +55,7 @@ def user_comment():
     try:
         src = os.path.join(root_dir(), 'application/comments/user_comment.json')
         json_file = open(src).read()
+        # return simplejson.loads(json_file)
         return json.loads(json_file)
     except IOError:
         return "Rank film running Error"
