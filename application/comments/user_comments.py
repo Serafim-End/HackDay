@@ -145,8 +145,9 @@ class RateModel:
     def make_rank_movies_json():
         model_rate = RateModel()
         array = model_rate.choose_movies()
+        json_array = UCList(array)
         json_file = open("rank_film_running.json", 'r+')
-        json_file.write(json.dumps(array))
+        json_file.write(json.dumps(json_array.to_json()))
         json_file.close()
 
     @staticmethod
@@ -167,6 +168,14 @@ class RateModel:
         dictionary = self.make_model()
         print dictionary
         return str()
+
+
+class UCList(json.JSONEncoder):
+    def __init__(self, array):
+        self.array = array
+
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=False)
 
 if __name__ == '__main__':
     # UserComment().__str__()
