@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 __author__ = 'nikita'
 import json
 from parser_csv import make_set
@@ -22,6 +23,19 @@ class MoviesPicture:
                     if film["images"]:
                         mc_model.picture = film["images"][0]["name"]
 
+    @staticmethod
+    def make_films(uc_model):
+        json_movies = MoviesPicture.get_movies()
+        for comment in uc_model.comments_list:
+            for film in json_movies:
+                if int(comment.movie_id) == int(film["id"]):
+                    uc_model.movie = film
+
+        json_array = RankList(uc_model)
+        json_file = open("user_comment.json", 'r+')
+        json_file.write(json.dumps(json_array.to_json()))
+        json_file.close()
+
     def model_to_json(self):
         json_array = RankList(self.mc_models_array)
         json_file = open("rank_comments.json", 'r+')
@@ -30,9 +44,10 @@ class MoviesPicture:
 
 
 if __name__ == '__main__':
-    array = make_set()
-    model = RankComments(array)
-    model.rank_comments()
-    movie_addition = MoviesPicture(model.mc_array)
-    movie_addition.make_pictures()
-    movie_addition.model_to_json()
+    MoviesPicture.make_films()
+    # array = make_set()
+    # model = RankComments(array)
+    # model.rank_comments()
+    # movie_addition = MoviesPicture(model.mc_array)
+    # movie_addition.make_pictures()
+    # movie_addition.model_to_json()

@@ -48,5 +48,15 @@ def rank_films_running():
     except IOError:
         return "Rank film running Error"
 
+
+@app.route('/user_comment/')
+def user_comment():
+    try:
+        src = os.path.join(root_dir(), 'application/comments/user_comment.json')
+        json_file = open(src).read()
+        return json.loads(json_file)
+    except IOError:
+        return "Rank film running Error"
+
 if __name__ == '__main__':
     app.run()

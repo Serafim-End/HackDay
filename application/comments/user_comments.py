@@ -57,6 +57,7 @@ class UserComment:
 class CommentMovie:
     def __init__(self, movie_id, comment_id, user_id, c_time, message):
         self.movie_id = movie_id
+        self.movie = None
         self.comment_id = comment_id
         self.user_id = user_id
         self.c_time = c_time
@@ -67,6 +68,8 @@ class RateModel:
     def __init__(self):
         self.json_movies = self.get_movies()
         self.comments_array = UserComment.make_model()
+        self.random_user_id_numb = 16
+        self.user_comment = None
 
     @staticmethod
     def get_movies():
@@ -75,15 +78,26 @@ class RateModel:
             return json.loads(json_array)
 
     def sentiment_detect(self):
-        sentiments_dictionary = {}
+        user_sentiments_dictionary = {}
         i = 0
         for comment_model in self.comments_array:
+            sentiments_dictionary = {}
+            if i == self.random_user_id_numb:
+                self.user_comment = comment_model
+                from movies import MoviesPicture
+                MoviesPicture.make_films(self.user_comment)
+                json_array = UCList(self.user_comment)
+                json_file = open("user_comment.json", 'r+')
+                json_file.write(json.dumps(json_array.to_json()))
+                json_file.close()
+
             for comment in comment_model.comments_list:
                 print "i: ", i, comment.message
                 detect_sentiment = DetectSentiment(comment.message)
                 sentiments_dictionary[comment.movie_id] = detect_sentiment.detect_sentiment()
                 i += 1
-        return sentiments_dictionary
+            user_sentiments_dictionary[comment_model.user_id] = sentiments_dictionary
+        return user_sentiments_dictionary
 
     def dump_sentimental(self):
         dictionary = self.sentiment_detect()
@@ -101,7 +115,10 @@ class RateModel:
 
     def make_model(self):
         rating_dictionary = {}
-        sentimental_dictionary = RateModel.load_sentimental()
+        sentimentals_dictionary = self.dump_sentimental()
+        # sentimentals_dictionary = self.load_sentimental()
+        sentimental_dictionary = sentimentals_dictionary.values()[0]
+
         # sentimental_dictionary = self.dump_sentimental()
         print sentimental_dictionary
         for comment_model in self.comments_array:
