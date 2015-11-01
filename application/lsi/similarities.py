@@ -17,7 +17,7 @@ class Similarity:
     @staticmethod
     def rank_priorities(similarities_vector):
         similarities_vector = {i + 1: similarities_vector[i] for i in xrange(len(similarities_vector))}
-        return sorted([(value, key) for (key, value) in similarities_vector.items()], reverse=True)
+        return sorted([(str(value), str(key)) for (key, value) in similarities_vector.items()], reverse=True)
 
 
 class SimilarityLSI(Similarity):
